@@ -21,22 +21,23 @@ CREATE TABLE "departments" (
 -- dept_emp
 
 CREATE TABLE "dept_emp" (
-    "emp_no" VARCHAR,
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-    "dept_no" VARCHAR,
-	FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
-    "from_date" DATE,
-    "to_date" DATE
+    "emp_no" INT   NOT NULL,
+    "dept_no" VARCHAR   NOT NULL,
+    CONSTRAINT "pk_dept_emp" PRIMARY KEY (
+        "emp_no","dept_no"
+     )
 );
+
+
 --department_managers
 
 CREATE TABLE "department_managers" (
-    "dept_no" VARCHAR,
-	FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
-    "emp_no" VARCHAR,
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-    "from_date" DATE,
-    "to_date" DATE
+    "dept_no" VARCHAR   NOT NULL,
+	"emp_no" INT   NOT NULL,
+    
+    CONSTRAINT "pk_epartment_managers" PRIMARY KEY (
+        "dept_no", "emp_no"
+     )
 );
 
 
@@ -58,23 +59,38 @@ CREATE TABLE "employees" (
 --salaries
 
 CREATE TABLE "salaries" (
-    "emp_no" VARCHAR,
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-    "salary" INTEGER,
-    "from_date" DATE,
-    "to_date" DATE
+     "emp_no" INT   NOT NULL,
+    "salary" INT   NOT NULL
 );
 
 --titles
 
 CREATE TABLE "titles" (
-    "emp_no" VARCHAR,
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-    "title" VARCHAR,
-    "from_date" DATE,
-    "to_date" DATE
+    "title_id" VARCHAR   NOT NULL,
+    "title" VARCHAR   NOT NULL,
+    CONSTRAINT "pk_titles" PRIMARY KEY (
+        "title_id"
+     )
 );
 
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title_id" FOREIGN KEY("emp_title_id")
+REFERENCES "titles" ("title_id");
 
 -- Query * FROM Each Table Confirming Data
 SELECT * FROM departments;
